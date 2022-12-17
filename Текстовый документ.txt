@@ -1,0 +1,46 @@
+# import config
+import telebot
+import rifmovni
+rifmovnik.ru/find.htm.set_lang('ru')
+bot = telebot.TeleBot('5826043071:AAG9FhxGFE0si3NDnEChd_rEEFo4ZO3Z178')
+
+@bot.message_handler()
+def rifmovnik(message):
+    search = message.text
+    #bot.send_message(message.chat.id, text)
+    try:
+        answer = rifmovnik.summary(search, page=2)
+    except:
+        answer = 'Статья не найдена'
+    try:
+        image = rifmovnik.page(search).images[0]
+        bot.send_message(message.chat.id, image)
+    except:
+        image = 'Картинок к статье не найдено'
+        bot.send_message(message.chat.id, answer)
+bot.polling(none_stop=True)
+
+import telebot
+from telebot import types
+bot = telebot.TeleBot('5826043071:AAG9FhxGFE0si3NDnEChd_rEEFo4ZO3Z178')
+
+@bot.message_handler(commands=['start'])
+def start(message):
+    kb = types.InlineKeyboardMarkup()
+    kb_rifm = types.InlineKeyboardButton(text='Рифма', callback_data='rifm')
+    kb.add(kb_rifm)
+    bot.send_message(message.chat.id, 'Привет, пришли рифму!', reply_markup=kb)
+
+@bot.callback_query_handler(func = lambda call: True)
+def callback_inline(call):
+    if call.data == 'rifma':
+        kb_rifma = types.InlineKeyboardMarkup()
+        kb_rifma_w = types.InlineKeyboardButton(text='Белая', callback_data='w_rifma')
+        kb_rifma_b - types.InlineKeyboardButton(text='Черная', callback_data='b_rifma')
+        kb_rifma.add(kb_rifma_w, kb_rifma_b)
+        bot.send_message(call.message.chat.id, 'Спелая', reply_markup=kb_rifma)
+
+bot.polling(none_stop=True)
+
+
+
